@@ -1,0 +1,7 @@
+Paste the following into the address bar of a File Explorer window to
+open the startup folder.
+
+%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
+
+Copy the three .lnk files into this folder to start your server automatically
+when you sign into windows.

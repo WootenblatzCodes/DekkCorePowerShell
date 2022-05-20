@@ -1,0 +1,1 @@
+PowerShell -NoExit -ExecutionPolicy bypass -File %USERPROFILE%/Documents/WindowsPowerShell/Dekkcore/RunMysql.ps1
