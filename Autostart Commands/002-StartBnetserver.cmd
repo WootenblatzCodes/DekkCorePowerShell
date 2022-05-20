@@ -1,2 +1,1 @@
-PowerShell -Command "Set-ExecutionPolicy -Scope CurrentUser Unrestricted -Force" 
-PowerShell -NoExit -File %USERPROFILE%/Documents/WindowsPowerShell/Dekkcore/RunBnetserver.ps1
+PowerShell -NoExit -ExecutionPolicy bypass -File %USERPROFILE%/Documents/WindowsPowerShell/Dekkcore/RunBnetserver.ps1
