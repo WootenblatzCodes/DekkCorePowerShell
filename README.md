@@ -7,6 +7,16 @@ The auto-restart behavior is configurable.  By default the script will only rest
 
 ---
 
+## Installation
+
+1. Double click `Install.cmd` to start the automatic installation process.  
+2. When prompted type Y or N to include ServerCommands.ps1 in the default PowerShell profile script.
+3. When prompted type Y or N to edit the Settings.ps1 file.  This is where you'll set the $SERVER_LOCATION variable that points to the location of your DekkCore install.
+
+This was tested heavily with newer versions of PowerShell.  I've attempted to support older releases that have a different script location but did not test that as much.
+
+---
+
 ## Manual Installation
 1. In File explorer paste `%USERPROFILE%\Documents\` into the address bar to open your documents folder.
    * If you do not have a folder called `PowerShell`, create that now. 
@@ -24,13 +34,7 @@ The auto-restart behavior is configurable.  By default the script will only rest
 
 **Autostart Commands**
 
-The *Autostart Commands* folder has three .CMD files that you can put in your Windows startup folder to automatically run your server when you sign in to windows.
-
-You can find your Startup folder by pasting the following into the address bar of File Explorer:
-
-    %USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
-
-Copy and paste the three CMD files into this folder to autostart the server applications after Windows restarts.
+The *Autostart Commands* folder has three .CMD files that are copied into your Windows startup folder.  This will automatically run your server when you sign in to windows.  Each CMD file exists to execute the corresponding Powershell script to start a given service.
 
 **Powershell files**
 
@@ -38,16 +42,46 @@ Copy and paste the three CMD files into this folder to autostart the server appl
 
 `ServerCommands.ps1` - Contains powershell functions for the run scripts.  You can also source this file in a PowerShell window to gain access to commands to manually run the servers or quickly open a MySQL console.
 
-    To make ServerCommands available in a normal PowerShell window, paste the following:
+`RunMysql.ps1` - This starts the database.  This runs immediately.
 
-    . .\%USERPROFILE%\Documents\PowerShell\DekkCore\ServerCommands.ps1
+`RunBnetserver.ps1` - This starts the BattleNet application. This waits 10 seconds before running to give the database time to start.
 
-    You could also add the above line into your PowerShell Profile located at
+`RunWorldserver.ps1` - This starts the Worldserver application.  This waits 20 seconds before running, to give the database and BnetServer time to start.
 
-    %USERPROFILE%\Documents\Powershell\Profile.ps1
+Delayed start occurs only the first time a script executes.  
 
-`RunMysql.ps1` - This starts the database
+---
 
-`RunBnetserver.ps1` - This starts the BattleNet application
+### Why would I want ServerCommands.ps1 in my Powershell profile?
 
-`RunWorldserver.ps1` - This starts the Worldserver application
+ServerCommands.ps1 is the brain of this project.  In addition to handling restarting crashed applications, prompting to quit between crashes, and managing the title of each PowerShell window, it makes the core functions available to call in any PowerShell window that has sourced the file.
+
+As an example, you can open powershell, source your profile with `. $PROFILE` and then type `dbconsole` to automatically open MySQL with a connection to the *auth* database.
+
+```
+PS C:\Server> . $PROFILE
+PS C:\Server> dbconsole
+mysql: [Warning] Using a password on the command line interface can be insecure.
+Welcome to the MySQL monitor.  Commands end with ; or \g.
+Your MySQL connection id is 19
+Server version: 8.0.28 MySQL Community Server - GPL
+
+Copyright (c) 2000, 2022, Oracle and/or its affiliates.
+
+Oracle is a registered trademark of Oracle Corporation and/or its
+affiliates. Other names may be trademarks of their respective
+owners.
+
+Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+
+mysql>
+```
+
+### Other commands available 
+`StartMysql` - Runs the database manually
+
+`StartBnetServer` - Runs the BnetServer manually
+
+`StartWorldServer` - Runs the WorldServer manually
+
+Running commands manually includes the same crash protection as the automated startup method.
