@@ -68,7 +68,20 @@ Delayed start occurs only the first time a script executes.
 
 ServerCommands.ps1 is the brain of this project.  In addition to handling restarting crashed applications, prompting to quit between crashes, and managing the title of each PowerShell window, it makes the core functions available to call in any PowerShell window that has sourced the file.
 
-As an example, you can open powershell, source your profile with `. $PROFILE` and then type `dbconsole` to automatically open MySQL with a connection to the *auth* database.
+---
+
+### How can I use the ServerCommands if my Profile isn't loading automatically?
+Open powershell, source your profile with `. $PROFILE` and then type `dbconsole` to automatically open MySQL with a connection to the *auth* database.
+
+```
+PS C:\Server> . $PROFILE
+```
+
+---
+
+### How can I run the dbconsole command?
+
+Open powershell, source your profile with `. $PROFILE` and then type `dbconsole` to automatically open MySQL with a connection to the *auth* database.
 
 ```
 PS C:\Server> . $PROFILE
@@ -89,7 +102,9 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 mysql>
 ```
 
-### Other commands available 
+---
+
+## Other commands available 
 `StartMysql` - Runs the database manually
 
 `StartBnetServer` - Runs the BnetServer manually
