@@ -17,6 +17,18 @@ This was tested heavily with newer versions of PowerShell.  I've attempted to su
 
 ---
 
+## How can I make all PowerShell security warnings go away?
+
+Because PowerShell can tell that you got these scripts from the internet, you'll have to unblock them. Changing the ExecutionPolicy with an Administrator account will not always make them stop showing up.  
+
+Open a PowerShell window and paste the following:
+
+```
+Unblock-File -Path $env:USERPROFILE\Documents\WindowsPowerShell\DekkCore\*.ps1
+```
+
+---
+
 ## Manual Installation
 1. In File explorer paste `%USERPROFILE%\Documents\` into the address bar to open your documents folder.
    * If you do not have a folder called `WindowsPowerShell`, create that now. 
