@@ -1,6 +1,11 @@
 $pshFolder = Split-Path $Profile
 . "$pshFolder\DekkCore\Settings.ps1"
 
+$mySqlCommands = @{
+        "console" = ".\mysql.exe -u $MYSQL_USER -p$MYSQL_PASS -h $MYSQL_HOST $MYSQL_DB";
+        "list-db" = ".\mysql.exe -u $MYSQL_USER -p$MYSQL_PASS -h $MYSQL_HOST -e 'show databases' -s --skip-column-names";
+    }
+
 function testPrompt() {
     $i = 0
     while ($i -lt 2) {
@@ -19,8 +24,7 @@ function testPrompt() {
 function dbconsole() {
     Set-Location $MYSQL_LOCATION
     $host.UI.RawUI.WindowTitle = "MySQL Console"
-    $run = ".\mysql.exe -u $MYSQL_USER -p$MYSQL_PASS -h $MYSQL_HOST $MYSQL_DB"
-    Invoke-Expression -Command $run
+    Invoke-Expression -Command $mySqlCommands.console
     $host.UI.RawUI.WindowTitle = "PowerShell"
 }
 
