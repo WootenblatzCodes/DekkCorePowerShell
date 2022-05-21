@@ -1,6 +1,8 @@
 # Set this to the location of your bnetserver.exe and worldserver.exe
 $SERVER_LOCATION = "c:\Server"
 
+$MYSQL_DB_LIST = @("auth", "characters", "hotfixes", "world")
+
 # Each service will be restarted $MAX_RESTARTS times before giving up
 $MAX_RESTARTS = 25
 
@@ -17,6 +19,11 @@ $MYSQL_HOST = "127.0.0.1"
 # comment out the line below and uncomment the Auth line
 $AUTH_SERVER_TYPE = "Bnet"
 #$AUTH_SERVER_TYPE = "Auth"
+
+$MYSQL_BACKUP_ALLOWED = 1
+$MYSQL_BACKUP_COUNT = 5
+$MYSQL_BACKUP_LOCATION = [string]::Join("\", $SERVER_LOCATION, "Backups")
+$MYSQL_BACKUP_BEFORE_WORLDSERER_RUNS = 1
 
 # You do not need to change this
 $MYSQL_LOCATION = [string]::Join("\", $SERVER_LOCATION, "Data", "MySQL", "bin")

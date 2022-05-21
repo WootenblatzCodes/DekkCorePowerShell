@@ -1,8 +1,16 @@
+param($forceRun)
+
 # This file is called library.ps1 because I thought calling it
 # install.ps1 would confuse people.  
 cls
+
 Write-Host -ForegroundColor DarkGreen  "Install DekkCore Powershell Scripts?"
-$run = Read-Host "Type Y or N "
+if([string]::IsNullOrEmpty($forceRun)) {
+    $run = Read-Host "Type Y or N "
+}
+else {
+    $run = "y"
+}
 if($run -eq "y") {
 
     $currentDir = $pwd
