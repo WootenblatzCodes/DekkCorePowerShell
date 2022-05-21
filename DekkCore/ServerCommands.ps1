@@ -62,7 +62,7 @@ function StartMysql() {
 }
 
 function askToQuit($counter) {
-    if(TimedPrompt "Press Q to quit" $PROMPT_TIMEOUT) {
+    if(TimedPrompt "Restarting in $PROMPT_TIMEOUT.  Press Q to quit" $PROMPT_TIMEOUT) {
         $counter = $MAX_RESTARTS + 100
         Write-Host -ForegroundColor Green "Exiting per user request"
     }
@@ -99,7 +99,7 @@ Function TimedPrompt($prompt,$secondsToWait){
         {
             $secondsCounter++
             $subCounter = 0
-            Write-Host -NoNewline "."
+            Write-Host -NoNewline "$secondsCounter ... "
         }       
         If ($secondsCounter -eq $secondsToWait) { 
             Write-Host "`r`n"
