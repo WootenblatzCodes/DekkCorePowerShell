@@ -13,5 +13,10 @@ $MYSQL_PASS = "admin"
 $MYSQL_DB = "auth"
 $MYSQL_HOST = "127.0.0.1"
 
+# If you're using this with an older project that runs authserver.exe,
+# comment out the line below and uncomment the Auth line
+$AUTH_SERVER_TYPE = "Bnet"
+#$AUTH_SERVER_TYPE = "Auth"
+
 # You do not need to change this
 $MYSQL_LOCATION = [string]::Join("\", $SERVER_LOCATION, "Data", "MySQL", "bin")

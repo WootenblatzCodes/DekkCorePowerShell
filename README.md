@@ -1,5 +1,5 @@
 # DekkCore Powershell
-## What is the purpose of these files?
+## What does it do?
 
 I created these scripts to automatically run DekkCore each time my windows virtual machine starts up.  When an application is run by these scripts it will automatically restart after a crash.  
 
@@ -17,15 +17,27 @@ This was tested heavily with newer versions of PowerShell.  I've attempted to su
 
 ---
 
+## How can I make all PowerShell security warnings go away?
+
+Because PowerShell can tell that you got these scripts from the internet, you'll have to unblock them. Changing the ExecutionPolicy with an Administrator account will not always make them stop showing up.  
+
+Open a PowerShell window and paste the following:
+
+```
+Unblock-File -Path $env:USERPROFILE\Documents\WindowsPowerShell\DekkCore\*.ps1
+```
+
+---
+
 ## Manual Installation
 1. In File explorer paste `%USERPROFILE%\Documents\` into the address bar to open your documents folder.
-   * If you do not have a folder called `PowerShell`, create that now. 
-   * If there is already PowerShell folder, move to step 2.
-2. Copy the `DekkCore` folder into `%USERPROFILE%\Documents\PowerShell\`
+   * If you do not have a folder called `WindowsPowerShell`, create that now. 
+   * If there is already WindowsPowerShell folder, move to step 2.
+2. Copy the `DekkCore` folder into `%USERPROFILE%\Documents\WindowsPowerShell\`
 3. Open a new File Explorer window by holding down the start key on your keyboard and tapping E (`WINKEY+E`)
 4. Paste `%USERPROFILE%\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup` into the address bar to open the Startup folder
 5. In the original File Explorer Window, select the three .CMD files from `DekkCore\Autostart Commands` and copy them into the Startup folder.
-6. Edit `%USERPROFILE%\Documents\PowerShell\DekkCore\Settings.ps1` and make sure the value assigned to `$SERVER_LOCATION` points to your DekkCore server directory.
+6. Edit `%USERPROFILE%\Documents\WindowsPowerShell\DekkCore\Settings.ps1` and make sure the value assigned to `$SERVER_LOCATION` points to your DekkCore server directory.
 
 
 ---
@@ -56,7 +68,20 @@ Delayed start occurs only the first time a script executes.
 
 ServerCommands.ps1 is the brain of this project.  In addition to handling restarting crashed applications, prompting to quit between crashes, and managing the title of each PowerShell window, it makes the core functions available to call in any PowerShell window that has sourced the file.
 
-As an example, you can open powershell, source your profile with `. $PROFILE` and then type `dbconsole` to automatically open MySQL with a connection to the *auth* database.
+---
+
+### How can I use the ServerCommands if my Profile isn't loading automatically?
+Open powershell, source your profile with `. $PROFILE` and then type `dbconsole` to automatically open MySQL with a connection to the *auth* database.
+
+```
+PS C:\Server> . $PROFILE
+```
+
+---
+
+### How can I run the dbconsole command?
+
+Open powershell, source your profile with `. $PROFILE` and then type `dbconsole` to automatically open MySQL with a connection to the *auth* database.
 
 ```
 PS C:\Server> . $PROFILE
@@ -77,7 +102,9 @@ Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
 mysql>
 ```
 
-### Other commands available 
+---
+
+## Other commands available 
 `StartMysql` - Runs the database manually
 
 `StartBnetServer` - Runs the BnetServer manually

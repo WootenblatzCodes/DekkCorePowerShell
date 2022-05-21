@@ -29,7 +29,13 @@ function StartBnetServer() {
     $host.UI.RawUI.WindowTitle = "BattleNetServer"
     $i = 0
     while ($i -lt $MAX_RESTARTS) {
-        & .\bnetserver.exe
+        if($AUTH_SERVER_TYPE -eq "Auth")
+        {
+            & .\authserver.exe
+        }
+        else {
+            & .\bnetserver.exe
+        }
         $i = askToQuit $i
         $i++
     }
