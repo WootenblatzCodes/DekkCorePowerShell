@@ -43,11 +43,15 @@ if($run -eq "y") {
     Write-Host -ForegroundColor Cyan $startupFolder
     Copy-Item -Path "$currentDir\Autostart Commands\*.cmd" -Destination $startupFolder  -Force
 
+    Write-Host -ForegroundColor DarkBlue "Copying backup cmd to Documents"
+    Copy-Item -Path "$currentDir\Task Scheduler Commands\DekkCoreBackup.cmd" -Destination "$docFolder" -Force
+
     # If we're running on an older version of powershell, try to use that path for the cmd files.
     if(!$pshFolder.Contains("WindowsPowerShell")) {
         (Get-Content "$startupFolder/001-StartMysql.cmd") -Replace 'WindowsPowershell', 'PowerShell' | Set-Content "$startupFolder/001-StartMysql.cmd"
         (Get-Content "$startupFolder/002-StartBnetserver.cmd") -Replace 'WindowsPowershell', 'PowerShell' | Set-Content "$startupFolder/002-StartBnetserver.cmd"
         (Get-Content "$startupFolder/003-StartWorldserver.cmd") -Replace 'WindowsPowershell', 'PowerShell' | Set-Content "$startupFolder/003-StartWorldserver.cmd"
+        (Get-Content "$docFolder/DekkCoreBackup.cmd") -Replace 'WindowsPowershell', 'PowerShell' | Set-Content "$docFolder/DekkCoreBackup.cmd"
     }
 
     $profileExists = Test-Path $pshProfile
