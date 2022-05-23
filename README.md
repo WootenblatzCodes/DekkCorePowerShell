@@ -5,6 +5,8 @@ I created these scripts to automatically run DekkCore each time my windows virtu
 
 The auto-restart behavior is configurable.  By default the script will only restart a service 25 times before giving up.  In between crashes there is a configurable wait period where you can hit **Q** to exit the auto-restart process. 
 
+This project also comes with commands that can back up your server's MySQL database.  See the [Other Commands](#OtherCommands) section for more information.
+
 ---
 
 ## Installation
@@ -14,6 +16,16 @@ The auto-restart behavior is configurable.  By default the script will only rest
 3. When prompted type Y or N to edit the Settings.ps1 file.  This is where you'll set the $SERVER_LOCATION variable that points to the location of your DekkCore install.
 
 This was tested heavily with newer versions of PowerShell.  I've attempted to support older releases that have a different script location but did not test that as much.
+
+---
+
+## What if I do not use DekkCore or I'm using an older server project?
+
+Server admins using Trinity Core or some other variant should be able to use these tools with no problems as long as you make sure to update the names of the databases in Settings.ps1.  
+
+If you're on an older project, such as 3.3.5a most of these tools will work.  Given that there is not a Bnetserver.exe in those projects, I've added an option in Settings.ps1 that lets you set the `$AUTH_SERVER_TYPE` to Bnet or Auth.  If you set it to Auth, the system will run authserver.exe instead of bnetserver.exe.
+
+While the database backup functionality should work universally as long as the database names are correct, any commands that interact with database records may be subject to release specific support.  
 
 ---
 
@@ -103,7 +115,7 @@ mysql>
 ```
 
 ---
-
+<a name="OtherCommands"></a>
 ## Other commands available 
 `StartMysql` - Runs the database manually
 
@@ -112,3 +124,11 @@ mysql>
 `StartWorldServer` - Runs the WorldServer manually
 
 Running commands manually includes the same crash protection as the automated startup method.
+
+**Database Commands**
+- `dekkCoreBackupDb dbName` will back up a single database where dbName is auth, world, hotfixes or characters.
+- `dekkCoreFullBackup` will backup all four databases.
+
+In Settings.ps1 you can set `$MYSQL_BACKUP_BEFORE_WORLDSERER_RUNS = 1` to enable running a full backup before the Worldserver starts after a reboot. As database backups take some time, the worldserver delay run of 20 seconds does not occur. 
+
+
