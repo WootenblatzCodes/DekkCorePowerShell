@@ -2,7 +2,7 @@ param($forceRun)
 
 # This file is called library.ps1 because I thought calling it
 # install.ps1 would confuse people.  
-cls
+Clear-Host
 
 Write-Host -ForegroundColor DarkGreen  "Install DekkCore Powershell Scripts?"
 if([string]::IsNullOrEmpty($forceRun)) {
