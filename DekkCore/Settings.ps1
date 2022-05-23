@@ -22,8 +22,14 @@ $AUTH_SERVER_TYPE = "Bnet"
 
 $MYSQL_BACKUP_ALLOWED = 1
 $MYSQL_BACKUP_COUNT = 5
-$MYSQL_BACKUP_LOCATION = [string]::Join("\", $SERVER_LOCATION, "Backups")
 $MYSQL_BACKUP_BEFORE_WORLDSERER_RUNS = 1
+
+# If you want to back up your SQL database to another location, modify
+# the join statement below accordingly.  Be sure that the parameter after "\"
+# contains a path with a drive letter or specify it explicitly, example:
+# [string]::Join("\", "d:", "data", "mysql-backups")
+# would backup your sql to d:\data\mysql-backups\
+$MYSQL_BACKUP_LOCATION = [string]::Join("\", $SERVER_LOCATION, "Backups")
 
 # You do not need to change this
 $MYSQL_LOCATION = [string]::Join("\", $SERVER_LOCATION, "Data", "MySQL", "bin")
