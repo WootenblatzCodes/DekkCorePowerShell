@@ -5,7 +5,7 @@ I created these scripts to automatically run DekkCore each time my windows virtu
 
 The auto-restart behavior is configurable.  By default the script will only restart a service 25 times before giving up.  In between crashes there is a configurable wait period where you can hit **Q** to exit the auto-restart process. 
 
-This project also comes with commands that can back up your server's MySQL database.  See the [Other Commands](#OtherCommands) section for more information.
+This project also comes with commands that can back up your server's MySQL database, run ad-hoc sql querys from the command line, upgrade heirlooms to max level and more.  See the [Other Commands](#OtherCommands) section for more information.
 
 ---
 
@@ -59,6 +59,10 @@ Unblock-File -Path $env:USERPROFILE\Documents\WindowsPowerShell\DekkCore\*.ps1
 **Autostart Commands**
 
 The *Autostart Commands* folder has three .CMD files that are copied into your Windows startup folder.  This will automatically run your server when you sign in to windows.  Each CMD file exists to execute the corresponding Powershell script to start a given service.
+
+**Task Scheduler Commands**
+
+There is a single task scheduler .CMD file that you can use to backup your database on a schedule.  Task Scheduler comes with windows and is located in Windows Administrative Tools.  [Learn about using Task Scheduler](https://www.google.com/search?q=how+to+schedule+a+task+windows).
 
 **Powershell files**
 
@@ -128,7 +132,9 @@ Running commands manually includes the same crash protection as the automated st
 **Database Commands**
 - `dekkCoreBackupDb dbName` will back up a single database where dbName is auth, world, hotfixes or characters.
 - `dekkCoreFullBackup` will backup all four databases.
+- `upgradeHeirlooms` will upgrade all heirlooms for existing users to max level for both 5 tier and 3 tier upgrade items.
+- `runSqlInDb "SQL STATEMENT"` will execute your SQL statement to the command line.  Be sure to prefix table names with the database that table is in, for instance "select * from realmlist" should be written as "select * from auth.realmlist".  Failure to prefix a db name will cause an error.
 
 In Settings.ps1 you can set `$MYSQL_BACKUP_BEFORE_WORLDSERER_RUNS = 1` to enable running a full backup before the Worldserver starts after a reboot. As database backups take some time, the worldserver delay run of 20 seconds does not occur. 
 
-
+Set `$AUTO_UPGRADE_HEIRLOOMS = 1` to upgrade heirlooms before the worldserver starts.  Because of how the server loads this data, updating it in the db while the server is running usually does not work without a reload.  Prior to starting the worldserver is an ideal location to make this change take place automatically.
