@@ -90,12 +90,24 @@ function listDatabases() {
 }
 
 function runSqlInDb() {
-    Param([Parameter(Mandatory = $false, Position = 0)] [string]$sql)
+    Param([Parameter(Mandatory = $true, Position = 0)] [string]$sql)
     Set-Location $MYSQL_LOCATION
     if([string]::IsNullOrEmpty($sql) -ne $true) {
-        $dbCmd = $mySqlCommands.runSql
-        $dbCmd = $dbCmd.Replace("SQL_STATEMENT_REPLACEMENT", $sql);
-        Invoke-Expression -Command $dbCmd
+        $foundDbName = 0
+        foreach($dbName in $MYSQL_DB_LIST) {
+            if($foundDbName -eq 0 -and $sql.Contains("$dbName.")) {
+                $foundDbName = 1
+            }
+        }
+        if($foundDbName -eq 0) {
+            Write-Host -ForegroundColor Red "ERROR - SQL run from command line must include database names in front of tables"
+            Write-Host -ForegroundColor DarkRed "Example: select * from auth.realmlist"
+        }
+        else {
+            $dbCmd = $mySqlCommands.runSql
+            $dbCmd = $dbCmd.Replace("SQL_STATEMENT_REPLACEMENT", $sql);
+            Invoke-Expression -Command $dbCmd
+        }
     }
     Set-Location $startLocation
 }
