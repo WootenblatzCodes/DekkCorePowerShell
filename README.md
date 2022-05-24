@@ -5,7 +5,12 @@ I created these scripts to automatically run DekkCore each time my windows virtu
 
 The auto-restart behavior is configurable.  By default the script will only restart a service 25 times before giving up.  In between crashes there is a configurable wait period where you can hit **Q** to exit the auto-restart process. 
 
-This project also comes with commands that can back up your server's MySQL database, run ad-hoc sql querys from the command line, upgrade heirlooms to max level and more.  See the [Other Commands](#OtherCommands) section for more information.
+This project also comes with some other administrative convience functions that can be executed from PowerShell, some of the functionality includes:
+   - Back up your server's MySQL databases, either one of them or all of them
+   - Run ad-hoc sql queries from the command line
+   - Upgrade heirlooms to max level.  
+   
+See the [Other Commands](#OtherCommands) section for more information.
 
 ---
 
@@ -133,7 +138,7 @@ Running commands manually includes the same crash protection as the automated st
 - `dekkCoreBackupDb dbName` will back up a single database where dbName is auth, world, hotfixes or characters.
 - `dekkCoreFullBackup` will backup all four databases.
 - `upgradeHeirlooms` will upgrade all heirlooms for existing users to max level for both 5 tier and 3 tier upgrade items.
-- `runSqlInDb "SQL STATEMENT"` will execute your SQL statement to the command line.  Be sure to prefix table names with the database that table is in, for instance "select * from realmlist" should be written as "select * from auth.realmlist".  Failure to prefix a db name will cause an error.
+- `runSqlInDb "SQL STATEMENT"` will execute your SQL statement to the command line.  Be sure to prefix table names with the database that table is in, for instance `select * from realmlist` should be written as `select * from auth.realmlist`.  Failure to prefix a db name will cause an error.
 
 In Settings.ps1 you can set `$MYSQL_BACKUP_BEFORE_WORLDSERER_RUNS = 1` to enable running a full backup before the Worldserver starts after a reboot. As database backups take some time, the worldserver delay run of 20 seconds does not occur. 
 
