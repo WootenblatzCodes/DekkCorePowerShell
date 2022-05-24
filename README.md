@@ -47,6 +47,9 @@ Unblock-File -Path $env:USERPROFILE\Documents\WindowsPowerShell\DekkCore\*.ps1
 ---
 
 ## Manual Installation
+
+This section is only useful if you do not use the provided installer named `Install.cmd`.
+
 1. In File explorer paste `%USERPROFILE%\Documents\` into the address bar to open your documents folder.
    * If you do not have a folder called `WindowsPowerShell`, create that now. 
    * If there is already WindowsPowerShell folder, move to step 2.
@@ -75,7 +78,7 @@ There is a single task scheduler .CMD file that you can use to backup your datab
 
 `ServerCommands.ps1` - Contains powershell functions for the run scripts.  You can also source this file in a PowerShell window to gain access to commands to manually run the servers or quickly open a MySQL console.
 
-`RunMysql.ps1` - This starts the database.  This runs immediately.
+`RunMysql.ps1` - This starts the database and is the first program to run.
 
 `RunBnetserver.ps1` - This starts the BattleNet application. This waits 10 seconds before running to give the database time to start.
 
