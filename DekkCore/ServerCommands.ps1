@@ -4,10 +4,13 @@ $pshFolder = Split-Path $Profile
 . "$pshFolder\DekkCore\Settings.ps1"
 
 $mySqlCommands = @{
+    "runSql"   = ".\mysql.exe -u $MYSQL_USER -p$MYSQL_PASS -h $MYSQL_HOST -e 'SQL_STATEMENT_REPLACEMENT'";
     "console"  = ".\mysql.exe -u $MYSQL_USER -p$MYSQL_PASS -h $MYSQL_HOST $MYSQL_DB";
     "listDb"   = ".\mysql.exe -u $MYSQL_USER -p$MYSQL_PASS -h $MYSQL_HOST -e 'show databases' -s --skip-column-names";
     "backupDb" = ".\mysqldump.exe -u $MYSQL_USER -p$MYSQL_PASS -h $MYSQL_HOST ";
 }
+
+$threeUpgradeHeirlooms = @(105689, 105690, 126948, 126949, 128318, 133596)
 
 function testPrompt() {
     $i = 0
@@ -86,6 +89,25 @@ function listDatabases() {
     Set-Location $startLocation
 }
 
+function runSqlInDb() {
+    Param([Parameter(Mandatory = $false, Position = 0)] [string]$sql)
+    Set-Location $MYSQL_LOCATION
+    if([string]::IsNullOrEmpty($sql) -ne $true) {
+        $dbCmd = $mySqlCommands.runSql
+        $dbCmd = $dbCmd.Replace("SQL_STATEMENT_REPLACEMENT", $sql);
+        Invoke-Expression -Command $dbCmd
+    }
+    Set-Location $startLocation
+}
+
+function upgradeHeirlooms() {
+    $updateFiveTier = "update battlenet_account_heirlooms set flags = 31 where flags != 31 and itemId not in ($threeUpgradeHeirlooms)"
+    $updateThreeTier = "update battlenet_account_heirlooms set flags = 6 where flags != 6 and itemId in ($threeUpgradeHeirlooms)"
+    runSql $updateFiveTier
+    runSql $updateThreeTier
+
+}
+
 function dbconsole() {
     Set-Location $MYSQL_LOCATION
     $host.UI.RawUI.WindowTitle = "MySQL Console"
@@ -112,6 +134,9 @@ function StartBnetServer() {
 }
 
 function StartWorldServer() {
+    if($AUTO_UPGRADE_HEIRLOOMS -eq 1) {
+        upgradeHeirlooms
+    }
     Set-Location $SERVER_LOCATION
     $host.UI.RawUI.WindowTitle = "WorldServer"
     $i = 0
@@ -137,7 +162,7 @@ function StartMysql() {
 }
 
 function askToQuit($counter) {
-    if (TimedPrompt "Restarting in $PROMPT_TIMEOUT.  Press Q to quit" $PROMPT_TIMEOUT) {
+    if (TimedPrompt "Restarting in $PROMPT_TIMEOUT.  Press Q to quit " $PROMPT_TIMEOUT) {
         $counter = $MAX_RESTARTS + 100
         Write-Host -ForegroundColor Green "Exiting per user request"
     }
