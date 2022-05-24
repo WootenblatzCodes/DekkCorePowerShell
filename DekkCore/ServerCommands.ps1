@@ -115,8 +115,8 @@ function runSqlInDb() {
 function upgradeHeirlooms() {
     $updateFiveTier = "update battlenet_account_heirlooms set flags = 31 where flags != 31 and itemId not in ($threeUpgradeHeirlooms)"
     $updateThreeTier = "update battlenet_account_heirlooms set flags = 6 where flags != 6 and itemId in ($threeUpgradeHeirlooms)"
-    runSql $updateFiveTier
-    runSql $updateThreeTier
+    runSqlInDb $updateFiveTier
+    runSqlInDb $updateThreeTier
 
 }
 
