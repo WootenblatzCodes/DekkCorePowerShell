@@ -10,7 +10,8 @@ $mySqlCommands = @{
     "backupDb" = ".\mysqldump.exe -u $MYSQL_USER -p$MYSQL_PASS -h $MYSQL_HOST ";
 }
 
-$threeUpgradeHeirlooms = @(105689, 105690, 126948, 126949, 128318, 133596)
+$twoUpgradeHeirlooms = @(133595, 133597, 133585, 133596, 133598)
+$threeUpgradeHeirlooms = @(105689, 105690, 126948, 126949, 128318, 105685, 105692, 105683, 105688, 105686, 105691, 105684, 105687, 105693, 131733)
 
 function testPrompt() {
     $i = 0
@@ -113,10 +114,16 @@ function runSqlInDb() {
 }
 
 function upgradeHeirlooms() {
+    $twoTierIdSql = [string]::Join(", ", $twoUpgradeHeirlooms)
     $threeTierIdSql = [string]::Join(", ", $threeUpgradeHeirlooms)
-    $updateFiveTier = "update auth.battlenet_account_heirlooms set flags = 31 where flags != 31 and itemId not in ($threeTierIdSql)"
+    $twoAndThreeTierIdSql = [string]::Join(", ", $twoUpgradeHeirlooms + $threeUpgradeHeirlooms)
+
+    $updateFiveTier = "update auth.battlenet_account_heirlooms set flags = 31 where flags != 31 and itemId not in ($twoAndThreeTierIdSql)"
+    $updateTwoTier = "update auth.battlenet_account_heirlooms set flags = 3 where flags != 3 and itemId in ($twoTierIdSql)"
     $updateThreeTier = "update auth.battlenet_account_heirlooms set flags = 6 where flags != 6 and itemId in ($threeTierIdSql)"
+
     runSqlInDb $updateFiveTier
+    runSqlInDb $updateTwoTier
     runSqlInDb $updateThreeTier
 
 }
