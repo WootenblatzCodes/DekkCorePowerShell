@@ -113,8 +113,9 @@ function runSqlInDb() {
 }
 
 function upgradeHeirlooms() {
-    $updateFiveTier = "update auth.battlenet_account_heirlooms set flags = 31 where flags != 31 and itemId not in ($threeUpgradeHeirlooms)"
-    $updateThreeTier = "update auth.battlenet_account_heirlooms set flags = 6 where flags != 6 and itemId in ($threeUpgradeHeirlooms)"
+    $threeTierIdSql = [string]::Join(", ", $threeUpgradeHeirlooms)
+    $updateFiveTier = "update auth.battlenet_account_heirlooms set flags = 31 where flags != 31 and itemId not in ($threeTierIdSql)"
+    $updateThreeTier = "update auth.battlenet_account_heirlooms set flags = 6 where flags != 6 and itemId in ($threeTierIdSql)"
     runSqlInDb $updateFiveTier
     runSqlInDb $updateThreeTier
 
